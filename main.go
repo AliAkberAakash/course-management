@@ -179,12 +179,11 @@ func deleteSingleCourse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var newCourse Course
 	for index, course := range courses {
 		if course.CourseId == id {
 			courses = append(courses[:index], courses[index+1:]...)
-			courses = append(courses, newCourse)
 			json.NewEncoder(w).Encode("Deleted successfully")
+			return
 		}
 	}
 }
