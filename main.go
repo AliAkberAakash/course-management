@@ -14,13 +14,13 @@ import (
 
 type Course struct {
 	CourseId    uuid.UUID `json:"courseid"`
-	CourseName  string    `json:"courseName"`
+	CourseName  string    `json:"name"`
 	CoursePrice int       `json:"price"`
 	Author      *Author   `json:"author"`
 }
 
 type Author struct {
-	FullName string `json:"fullName"`
+	FullName string `json:"name"`
 	Website  string `json:"website"`
 }
 
@@ -119,7 +119,7 @@ func createSingleCourse(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&course)
 
 	if course.IsEmpty() {
-		json.NewEncoder(w).Encode("Invalid request body")
+		json.NewEncoder(w).Encode("Invalid json")
 		return
 	}
 
@@ -154,8 +154,10 @@ func updateSingleCourse(w http.ResponseWriter, r *http.Request) {
 				json.NewEncoder(w).Encode("Invalid body")
 				return
 			} else {
+				newCourse.CourseId = id
 				courses = append(courses, newCourse)
 				json.NewEncoder(w).Encode(newCourse)
+				return
 			}
 		}
 	}
